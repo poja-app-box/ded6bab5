@@ -38,7 +38,21 @@ configurations {
 
 
 
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.jvmArgs += ["-Xss2g"]
+}
+tasks.withType(Test).configureEach {
+    jvmArgs += ["-Xss2g"]
+}
+bootRun {
+    jvmArgs += ["-Xss2g"]
+}
+
+
 test {
+    minHeapSize = "512m"
+    maxHeapSize = "1g"
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
     useJUnitPlatform()
     finalizedBy jacocoTestCoverageVerification
